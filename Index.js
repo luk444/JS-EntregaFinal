@@ -112,10 +112,10 @@ function actualizarContadorCarrito() {
       const productoHTML = `
         <div>
           <span>${producto.nombre}</span>
-          <button class="btn btn-dark" onclick="restarUnidad(${producto.id})">-</button>
+          <button class="btn btn-dark" data-action="carrito-option" onclick="restarUnidad(${producto.id})">-</button>
           <span>${producto.cantidad}</span>
-          <button class="btn btn-dark spacebtn" onclick="sumarUnidad(${producto.id})">+</button>
-          <button class="btn btn-dark spacebtn" onclick="eliminarProducto(${producto.id})">Eliminar</button>
+          <button class="btn btn-dark spacebtn" data-action="carrito-option" onclick="sumarUnidad(${producto.id})">+</button>
+          <button class="btn btn-dark spacebtn" data-action="carrito-option" onclick="eliminarProducto(${producto.id})">Eliminar</button>
         </div>
       `;
       previsualizacionCarritoElemento.innerHTML += productoHTML;
@@ -154,7 +154,6 @@ function eliminarProducto(id) {
   }
 }
 
-
 // ... Código existente ...
 
 const imagenCarrito = document.getElementById('imagenCarrito');
@@ -171,8 +170,14 @@ cerrarPopup.addEventListener('click', () => {
   document.removeEventListener('click', cerrarPopupExterno);
 });
 
+// Agrega el atributo 'data-action' a los botones de suma, resta y eliminación
+const botonesSumaResta = document.querySelectorAll('.btn-dark.spacebtn');
+botonesSumaResta.forEach((boton) => {
+  boton.setAttribute('data-action', 'carrito-option');
+});
+
 function cerrarPopupExterno(event) {
-  if (!popupCarrito.contains(event.target) && event.target !== imagenCarrito) {
+  if (!popupCarrito.contains(event.target) && event.target !== imagenCarrito && !event.target.hasAttribute('data-action', 'carrito-option')) {
     popupCarrito.style.display = 'none';
     document.removeEventListener('click', cerrarPopupExterno);
   }
