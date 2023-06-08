@@ -11,29 +11,42 @@
 
 <body>
   <h3 id="titulo">ESCABIA2, TIENDA ONLINE</h3>
-  <h4 id="prodd">Productos</h4>
-
-  <form id="formulario">
-    <input type="text" name="nombre" id="nombre" />
-    <input type="text" name="apellido" id="apellido" />
-    <input type="text" name="email" id="email">
-    <input type="submit" value="Enviar" />
-    <input type="reset" value="Borrar">
-  </form>
-
-  <div class="row" id="divProductos"></div>
-
-  <div class="button">
-    <button id="finalizar" class="btn btn-secondary">Finalizar Compra</button>
-  </div>
 
   <div id="divCarrito">
-    <table class="table">
+    <div id="divCarrito" class="carrito-container">
+      <img id="imagenCarrito" src="images/carrito-de-compras.png" alt="Carrito de compras">
+      <span id="contadorCarrito" class="contador-carrito">0</span>
+    </div>
+    
+    <div id="popupCarrito" class="popup-carrito">
+      <h4>Tu carrito de compras</h4>
+      <div id="previsualizacionCarrito"></div>
+      <div class="button">
+        <button onclick="mostrarTabla()" id="finalizar" class="btn btn-secondary">Finalizar Compra</button>
+      </div>
+      <button id="cerrarPopup">Cerrar</button>
+    </div>    
+
+    <table id="tabla" class="tabla-oculta">
       <thead id="thead"></thead>
       <tbody id="tbody"></tbody>
     </table>
     <p id="total"></p>
   </div>
+
+
+  <h4 id="prodd">Productos</h4>
+
+  
+  <form id="formulario">
+    
+  </form>
+
+  <div class="row" id="divProductos"></div>
+
+<!--   <div class="button">
+    <button id="finalizar" class="btn btn-secondary">Finalizar Compra</button>
+  </div> -->
 
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

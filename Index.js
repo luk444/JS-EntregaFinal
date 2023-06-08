@@ -65,12 +65,15 @@ productos.forEach((prod) => {
 </div>`
 })
 
-// Guardar productos en el carrito //
 
+
+// Guardar productos en el carrito //
 const carrito = []
 
-// Funcion para guardar en cada uno de los botones de comprar //
+// Declarar contadorCarrito fuera del alcance de boton.onclick
+let contadorCarrito = 0;
 
+// Funcion para guardar en cada uno de los botones de comprar //
 const botonesAgregar = document.querySelectorAll('.btn-dark')
 botonesAgregar.forEach((boton) => {
   boton.onclick = () => {
@@ -89,9 +92,95 @@ botonesAgregar.forEach((boton) => {
     } else {
       carrito[indexProd].cantidad++
     }
-    console.log(carrito)
+
+    // Incrementar el contador del carrito y actualizar el texto
+    contadorCarrito++;
+    actualizarContadorCarrito();
   }
 })
+
+// Función para actualizar el texto del contador en algún elemento HTML
+function actualizarContadorCarrito() {
+  const contadorCarritoElemento = document.getElementById('contadorCarrito');
+  contadorCarritoElemento.textContent = contadorCarrito.toString();
+
+  const previsualizacionCarritoElemento = document.getElementById('previsualizacionCarrito');
+  previsualizacionCarritoElemento.innerHTML = ''; // Limpiar la previsualización actual
+
+  if (contadorCarrito > 0) {
+    carrito.forEach((producto) => {
+      const productoHTML = `
+        <div>
+          <span>${producto.nombre}</span>
+          <button class="btn btn-dark" onclick="restarUnidad(${producto.id})">-</button>
+          <span>${producto.cantidad}</span>
+          <button class="btn btn-dark spacebtn" onclick="sumarUnidad(${producto.id})">+</button>
+          <button class="btn btn-dark spacebtn" onclick="eliminarProducto(${producto.id})">Eliminar</button>
+        </div>
+      `;
+      previsualizacionCarritoElemento.innerHTML += productoHTML;
+    });
+  } else {
+    previsualizacionCarritoElemento.textContent = 'No hay productos en el carrito';
+  }
+}
+
+// Función para restar, sumar y eliminar productos del carrito
+function restarUnidad(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    if (producto.cantidad > 1) {
+      producto.cantidad--;
+    } else {
+      carrito.splice(carrito.indexOf(producto), 1);
+    }
+    actualizarContadorCarrito();
+  }
+}
+
+function sumarUnidad(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    producto.cantidad++;
+    actualizarContadorCarrito();
+  }
+}
+
+function eliminarProducto(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    carrito.splice(carrito.indexOf(producto), 1);
+    actualizarContadorCarrito();
+  }
+}
+
+
+// ... Código existente ...
+
+const imagenCarrito = document.getElementById('imagenCarrito');
+const popupCarrito = document.getElementById('popupCarrito');
+const cerrarPopup = document.getElementById('cerrarPopup');
+
+imagenCarrito.addEventListener('click', () => {
+  popupCarrito.style.display = 'block';
+  document.addEventListener('click', cerrarPopupExterno);
+});
+
+cerrarPopup.addEventListener('click', () => {
+  popupCarrito.style.display = 'none';
+  document.removeEventListener('click', cerrarPopupExterno);
+});
+
+function cerrarPopupExterno(event) {
+  if (!popupCarrito.contains(event.target) && event.target !== imagenCarrito) {
+    popupCarrito.style.display = 'none';
+    document.removeEventListener('click', cerrarPopupExterno);
+  }
+}
+
+// ... Resto del código ...
+
+
 
 // Boton finalizar compra
 const botonFinalizar = document.querySelector('#finalizar')
@@ -132,6 +221,59 @@ botonFinalizar.onclick = () => {
     botonAbrirTarjeta.className = 'btn btn-dark centerpa';
     botonAbrirTarjeta.id = 'botonAbrirTarjeta';
     botonAbrirTarjeta.onclick = abrirTarjetaFlotante;
+    // Actualizar el contenido de la tabla de productos
+function actualizarTablaProductos() {
+  tbody.innerHTML = '';
+
+  let totalCompra = 0;
+  carrito.forEach((prod) => {
+    totalCompra += prod.cantidad * prod.precio;
+    tbody.innerHTML += `
+      <tr>
+        <td>${prod.nombre}</td>
+        <td>${prod.cantidad}</td>
+        <td> $ ${prod.cantidad * prod.precio}</td>
+      </tr>
+    `;
+  });
+
+  parrafoTotal.innerText = `Total de la Compra  $ ${totalCompra}`;
+}
+
+// Función para restar, sumar y eliminar productos del carrito
+function restarUnidad(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    if (producto.cantidad > 1) {
+      producto.cantidad--;
+    } else {
+      carrito.splice(carrito.indexOf(producto), 1);
+    }
+    contadorCarrito--;
+    actualizarContadorCarrito();
+    actualizarTablaProductos();
+  }
+}
+
+function sumarUnidad(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    producto.cantidad++;
+    contadorCarrito++;
+    actualizarContadorCarrito();
+    actualizarTablaProductos();
+  }
+}
+
+function eliminarProducto(id) {
+  const producto = carrito.find((prod) => prod.id === id);
+  if (producto) {
+    carrito.splice(carrito.indexOf(producto), 1);
+    contadorCarrito -= producto.cantidad;
+    actualizarContadorCarrito();
+    actualizarTablaProductos();
+  }
+}
 
     divCarrito.appendChild(botonAbrirTarjeta);
   }
@@ -215,6 +357,9 @@ function cerrarTarjetaFlotante() {
   }, 10000);
 }
 
+
 // Agregar el botón al DOM
 const divCarrito = document.getElementById('divCarrito');
 divCarrito.appendChild(botonAbrirTarjeta);
+
+
