@@ -165,11 +165,6 @@ imagenCarrito.addEventListener('click', () => {
   document.addEventListener('click', cerrarPopupExterno);
 });
 
-cerrarPopup.addEventListener('click', () => {
-  popupCarrito.style.display = 'none';
-  document.removeEventListener('click', cerrarPopupExterno);
-});
-
 // Agrega el atributo 'data-action' a los botones de suma, resta y eliminación
 const botonesSumaResta = document.querySelectorAll('.btn-dark.spacebtn');
 botonesSumaResta.forEach((boton) => {
