@@ -77,26 +77,33 @@ let contadorCarrito = 0;
 const botonesAgregar = document.querySelectorAll('.btn-dark')
 botonesAgregar.forEach((boton) => {
   boton.onclick = () => {
-    const producto = productos.find((prod) => prod.id === parseInt(boton.id))
-
+    const producto = productos.find((prod) => prod.id === parseInt(boton.id));
+  
     const prodCarrito = {
       id: producto.id,
       nombre: producto.nombre,
       precio: producto.precio,
       cantidad: 1,
-    }
-
-    const indexProd = carrito.findIndex((prod) => prod.id === prodCarrito.id)
+    };
+  
+    // Obtener el precio del producto seleccionado
+    const precioProducto = parseInt(producto.precio);
+  
+    const indexProd = carrito.findIndex((prod) => prod.id === prodCarrito.id);
     if (indexProd === -1) {
-      carrito.push(prodCarrito)
+      carrito.push(prodCarrito);
     } else {
-      carrito[indexProd].cantidad++
+      carrito[indexProd].cantidad++;
     }
-
+  
     // Incrementar el contador del carrito y actualizar el texto
     contadorCarrito++;
     actualizarContadorCarrito();
-  }
+  
+    // Agregar el precio del producto al objeto del carrito
+    carrito[indexProd].precioProducto = precioProducto;
+  };
+  
 })
 
 // Función para actualizar el texto del contador en algún elemento HTML
@@ -112,11 +119,11 @@ function actualizarContadorCarrito() {
       const productoHTML = `
         <div>
           <span>${producto.nombre}</span>
-          <button class="btn btn-dark" data-action="carrito-option" onclick="restarUnidad(${producto.id})">-</button>
+          <button class="btn btn-outline-danger" data-action="carrito-option" onclick="restarUnidad(${producto.id})">-</button>
           <span>${producto.cantidad}</span>
-          <button class="btn btn-dark spacebtn" data-action="carrito-option" onclick="sumarUnidad(${producto.id})">+</button>
-          <button class="btn btn-dark spacebtn" data-action="carrito-option" onclick="eliminarProducto(${producto.id})">Eliminar</button>
-        </div>
+          <button class="btn btn-outline-success spacebtn" data-action="carrito-option" onclick="sumarUnidad(${producto.id})">+</button>
+          <button class="btn btn-outline-warning spacebtn" data-action="carrito-option" onclick="eliminarProducto(${producto.id})">Eliminar</button>
+          <span class="precioProducto">$${producto.precio * producto.cantidad}</span></div>
       `;
       previsualizacionCarritoElemento.innerHTML += productoHTML;
     });
@@ -124,6 +131,8 @@ function actualizarContadorCarrito() {
     previsualizacionCarritoElemento.textContent = 'No hay productos en el carrito';
   }
 }
+
+
 
 // Función para restar, sumar y eliminar productos del carrito
 function restarUnidad(id) {
@@ -177,10 +186,6 @@ function cerrarPopupExterno(event) {
     document.removeEventListener('click', cerrarPopupExterno);
   }
 }
-
-// ... Resto del código ...
-
-
 
 // Boton finalizar compra
 const botonFinalizar = document.querySelector('#finalizar')
@@ -361,5 +366,4 @@ function cerrarTarjetaFlotante() {
 // Agregar el botón al DOM
 const divCarrito = document.getElementById('divCarrito');
 divCarrito.appendChild(botonAbrirTarjeta);
-
 
