@@ -195,7 +195,7 @@ const parrafoTotal = document.querySelector('#total')
 botonFinalizar.onclick = () => {
   divProductos.remove()
   botonFinalizar.remove()
-  prodd.innerText = 'TU CARRITO';
+  prodd.innerText = '';
 
   thead.innerHTML = `<tr class= "table">
   <th scope="col">Producto</th>
@@ -223,7 +223,7 @@ botonFinalizar.onclick = () => {
     // Si no existe, crear el botón "Abrir Tarjeta" y agregarlo al DOM
     const botonAbrirTarjeta = document.createElement('button');
     botonAbrirTarjeta.textContent = 'PAGAR';
-    botonAbrirTarjeta.className = 'btn btn-dark centerpa';
+    botonAbrirTarjeta.className = 'btn btn-outline-success centerpa';
     botonAbrirTarjeta.id = 'botonAbrirTarjeta';
     botonAbrirTarjeta.onclick = abrirTarjetaFlotante;
     // Actualizar el contenido de la tabla de productos
@@ -315,6 +315,8 @@ function abrirTarjetaFlotante() {
   const botonCerrar = document.createElement('button');
   botonCerrar.innerText = 'Pagar';
   botonCerrar.onclick = cerrarTarjetaFlotante;
+  botonCerrar.classList.add('btn', 'btn-outline-success');
+
 
   contenidoTarjeta.appendChild(imagenTarjeta);
   contenidoTarjeta.appendChild(inputNombreTitular);
@@ -343,7 +345,7 @@ function cerrarTarjetaFlotante() {
 
   const botonCerrar = document.createElement('button');
   botonCerrar.innerText = 'Cerrar';
-  botonCerrar.className = 'btn btn-dark';
+  botonCerrar.className = 'btn btn-outline-success';
   botonCerrar.onclick = () => {
     cardCompraExitosa.remove();
     window.location.href = 'index.html';
