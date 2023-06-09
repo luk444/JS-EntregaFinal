@@ -70,10 +70,10 @@ productos.forEach((prod) => {
 // Guardar productos en el carrito //
 const carrito = []
 
-// Declarar contadorCarrito fuera del alcance de boton.onclick
+// Declaro contadorCarrito
 let contadorCarrito = 0;
 
-// Funcion para guardar en cada uno de los botones de comprar //
+// Funcion para guardar en cada uno de los botones de compra //
 const botonesAgregar = document.querySelectorAll('.btn-dark')
 botonesAgregar.forEach((boton) => {
   boton.onclick = () => {
@@ -96,7 +96,7 @@ botonesAgregar.forEach((boton) => {
       carrito[indexProd].cantidad++;
     }
   
-    // Incrementar el contador del carrito y actualizar el texto
+    // Incrementar el contador del carrito y actualizar el input
     contadorCarrito++;
     actualizarContadorCarrito();
   
@@ -105,14 +105,13 @@ botonesAgregar.forEach((boton) => {
   };
   
 })
-
-// Función para actualizar el texto del contador en algún elemento HTML
+// Funcion para actualizar el texto del contador html
 function actualizarContadorCarrito() {
   const contadorCarritoElemento = document.getElementById('contadorCarrito');
   contadorCarritoElemento.textContent = contadorCarrito.toString();
 
   const previsualizacionCarritoElemento = document.getElementById('previsualizacionCarrito');
-  previsualizacionCarritoElemento.innerHTML = ''; // Limpiar la previsualización actual
+  previsualizacionCarritoElemento.innerHTML = ''; // Limpia la previsualización actual
 
   if (contadorCarrito > 0) {
     carrito.forEach((producto) => {
@@ -131,8 +130,6 @@ function actualizarContadorCarrito() {
     previsualizacionCarritoElemento.textContent = 'No hay productos en el carrito';
   }
 }
-
-
 
 // Función para restar, sumar y eliminar productos del carrito
 function restarUnidad(id) {
@@ -163,8 +160,6 @@ function eliminarProducto(id) {
   }
 }
 
-// ... Código existente ...
-
 const imagenCarrito = document.getElementById('imagenCarrito');
 const popupCarrito = document.getElementById('popupCarrito');
 const cerrarPopup = document.getElementById('cerrarPopup');
@@ -174,7 +169,7 @@ imagenCarrito.addEventListener('click', () => {
   document.addEventListener('click', cerrarPopupExterno);
 });
 
-// Agrega el atributo 'data-action' a los botones de suma, resta y eliminación
+// Agrega el atributo 'data-action' a los botones de suma, resta y de eliminar
 const botonesSumaResta = document.querySelectorAll('.btn-dark.spacebtn');
 botonesSumaResta.forEach((boton) => {
   boton.setAttribute('data-action', 'carrito-option');
@@ -220,7 +215,7 @@ botonFinalizar.onclick = () => {
   // Verificar si el botón "Abrir Tarjeta" ya existe en el DOM
   const botonAbrirTarjeta = document.getElementById('botonAbrirTarjeta');
   if (!botonAbrirTarjeta) {
-    // Si no existe, crear el botón "Abrir Tarjeta" y agregarlo al DOM
+    // Si no existe, crea el botón "Abrir Tarjeta" y lo agrega al DOM
     const botonAbrirTarjeta = document.createElement('button');
     botonAbrirTarjeta.textContent = 'PAGAR';
     botonAbrirTarjeta.className = 'btn btn-outline-success centerpa';
@@ -245,7 +240,7 @@ function actualizarTablaProductos() {
   parrafoTotal.innerText = `Total de la Compra  $ ${totalCompra}`;
 }
 
-// Función para restar, sumar y eliminar productos del carrito
+// Funcion para restar, sumar y eliminar productos del carrito
 function restarUnidad(id) {
   const producto = carrito.find((prod) => prod.id === id);
   if (producto) {
@@ -284,7 +279,7 @@ function eliminarProducto(id) {
   }
 };
 
-// Botón para abrir la tarjeta flotante
+// Boton para abrir la tarjeta flotante
 function abrirTarjetaFlotante() {
   const tarjetaFlotante = document.createElement('div');
   tarjetaFlotante.className = 'tarjeta-flotante';
@@ -296,44 +291,71 @@ function abrirTarjetaFlotante() {
   imagenTarjeta.src = 'https://static.vecteezy.com/system/resources/previews/005/035/758/large_2x/bank-card-icon-editable-of-credit-card-vector.jpg'; // TARJETA IMG
   imagenTarjeta.alt = 'Tarjeta de débito/crédito';
 
+  const formulario = document.createElement('form'); // Agregar formulario
+  formulario.addEventListener('submit', validarFormulario); // Agregar el evento submit al formulario
+
   const inputNombreTitular = document.createElement('input');
   inputNombreTitular.type = 'text';
   inputNombreTitular.placeholder = 'Nombre del titular';
+  inputNombreTitular.required = true;
 
   const inputNumeroTarjeta = document.createElement('input');
   inputNumeroTarjeta.type = 'text';
   inputNumeroTarjeta.placeholder = 'Número de tarjeta';
+  inputNumeroTarjeta.required = true;
 
   const inputVencimientoTarjeta = document.createElement('input');
   inputVencimientoTarjeta.type = 'text';
   inputVencimientoTarjeta.placeholder = 'Fecha de vencimiento';
+  inputVencimientoTarjeta.required = true;
 
   const inputCodigoSeguridad = document.createElement('input');
   inputCodigoSeguridad.type = 'text';
   inputCodigoSeguridad.placeholder = 'Código de seguridad';
+  inputCodigoSeguridad.required = true;
 
-  const botonCerrar = document.createElement('button');
-  botonCerrar.innerText = 'Pagar';
-  botonCerrar.onclick = cerrarTarjetaFlotante;
-  botonCerrar.classList.add('btn', 'btn-outline-success');
+  const botonEnviar = document.createElement('button');
+  botonEnviar.innerText = 'Completar Compra';
+  botonEnviar.classList.add('btn', 'btn-outline-success');
 
+  formulario.appendChild(inputNombreTitular);
+  formulario.appendChild(inputNumeroTarjeta);
+  formulario.appendChild(inputVencimientoTarjeta);
+  formulario.appendChild(inputCodigoSeguridad);
+  formulario.appendChild(botonEnviar);
 
   contenidoTarjeta.appendChild(imagenTarjeta);
-  contenidoTarjeta.appendChild(inputNombreTitular);
-  contenidoTarjeta.appendChild(inputNumeroTarjeta);
-  contenidoTarjeta.appendChild(inputVencimientoTarjeta);
-  contenidoTarjeta.appendChild(inputCodigoSeguridad);
-  contenidoTarjeta.appendChild(botonCerrar);
+  contenidoTarjeta.appendChild(formulario);
 
   tarjetaFlotante.appendChild(contenidoTarjeta);
   document.body.appendChild(tarjetaFlotante);
+}
+
+function validarFormulario(event) {
+  event.preventDefault(); // Preeviene el envo del formulario
+
+  const inputNombreTitular = document.querySelector('input[placeholder="Nombre del titular"]');
+  const inputNumeroTarjeta = document.querySelector('input[placeholder="Número de tarjeta"]');
+  const inputVencimientoTarjeta = document.querySelector('input[placeholder="Fecha de vencimiento"]');
+  const inputCodigoSeguridad = document.querySelector('input[placeholder="Código de seguridad"]');
+
+  if (
+    inputNombreTitular.value &&
+    inputNumeroTarjeta.value &&
+    inputVencimientoTarjeta.value &&
+    inputCodigoSeguridad.value
+  ) {
+    cerrarTarjetaFlotante(); // Llama a la funcion para cerrar la tarjeta y muestra el mensaje de "Compra exitosa"
+  } else {
+    alert('Por favor, complete todos los campos requeridos.');
+  }
 }
 
 function cerrarTarjetaFlotante() {
   const tarjetaFlotante = document.querySelector('.tarjeta-flotante');
   tarjetaFlotante.remove();
 
-  // Crear la card mensaje de "Compra exitosa"
+  // Crea la card mensaje de "Compra exitosa"
   const cardCompraExitosa = document.createElement('div');
   cardCompraExitosa.className = 'card card-exitosa';
 
@@ -349,8 +371,6 @@ function cerrarTarjetaFlotante() {
   botonCerrar.onclick = () => {
     cardCompraExitosa.remove();
     window.location.href = 'index.html';
-
-  divCarrito.appendChild(botonVolver);
   };
 
   cardBody.appendChild(mensajeCompraExitosa);
@@ -358,14 +378,12 @@ function cerrarTarjetaFlotante() {
   cardCompraExitosa.appendChild(cardBody);
   document.body.appendChild(cardCompraExitosa);
 
-  // Cerrar la card después de unos segundos
+  // Cerrar la card después de unos toque
   setTimeout(() => {
     cardCompraExitosa.remove();
   }, 10000);
 }
 
-
-// Agregar el botón al DOM
+// Agrega el boton al DOM
 const divCarrito = document.getElementById('divCarrito');
 divCarrito.appendChild(botonAbrirTarjeta);
-

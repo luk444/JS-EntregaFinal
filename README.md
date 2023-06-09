@@ -1,2 +1,2 @@
-# JS-PreEntrega-3
+# JS-ProyectoFinal-Luca-Ventura
 PROYECTO ESCABIA2
